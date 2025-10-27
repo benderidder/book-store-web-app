@@ -1,4 +1,5 @@
-from app.models import db, Book
+from app.models import Book
+from .main import db
 
 def seed_data():
     with db.session.begin():

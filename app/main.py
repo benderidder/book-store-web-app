@@ -1,22 +1,16 @@
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from app.models import db, Book  # Import db from models.py
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/bookstore_db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
 from app.seed import seed_data  # Import the seed function
-
-migrate = Migrate()
-
-def create_app():
-    app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost/bookstore_db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    db.init_app(app)
-    migrate.init_app(app, db)
-
-    return app
-
-app = create_app()
+from app.models import Book  # Import db from models.py
 
 with app.app_context():
     seed_data()  # Call the seed function

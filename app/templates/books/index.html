@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Book store
+{% endblock %}
+
+{% block content %}
+<h1>Welcome to the Book Store</h1>
+<p>Find your favorite books here!</p>
+    <table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+        <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.title }}</td>
+            <td>
+                <form method="GET" action="{{ url_for('books_edit', book_id=row.id) }}" style="display:inline;">
+                    <input type="submit" value="Edit">
+                </form>
+                <form method="POST" action="{{ url_for('books_delete', book_id=row.id) }}" style="display:inline;">
+                    <input type="submit" value="Delete" onclick="return confirm('Are you sure you want to delete this book?');">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<input type="button" value="Create New Book" onclick="location.href='{{ url_for('books_create') }}'"/>
+{% endblock %}

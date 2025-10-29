@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Edit Book
+{% endblock %}
+
+{% block content %}
+<h1>Edit book</h1>
+<form method="POST" action="{{ url_for('books_edit', book_id=book.id) }}">
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" value="{{ book.title }}" required>
+    <input type="submit" value="Save Changes">
+</form>
+{% endblock %}

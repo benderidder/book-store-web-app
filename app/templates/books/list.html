@@ -32,12 +32,12 @@ Book store
                     <td class="mdl-data-table__cell--non-numeric">{{ row.title }}</td>
                     <td class="mdl-data-table__cell--non-numeric">
                         <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"
-                                onclick="location.href='{{ url_for('books_edit', book_id=row.id) }}'">
+                                onclick="location.href='{{ url_for('books.edit', book_id=row.id) }}'">
                             <i class="material-icons">edit</i>
                         </button>
-                        
-                        <form method="POST" action="{{ url_for('books_delete', book_id=row.id) }}" style="display:inline;">
-                            <button type="submit" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" 
+
+                        <form method="POST" action="{{ url_for('books.delete', book_id=row.id) }}" style="display:inline;">
+                            <button type="submit" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"
                                     onclick="return confirm('Are you sure you want to delete this book?');">
                                 <i class="material-icons">delete</i>
                             </button>
@@ -65,7 +65,7 @@ Book store
 </div>
 
 <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored fab-bottom-right" 
-        onclick="location.href='{{ url_for('books_create') }}'">
+        onclick="location.href='{{ url_for('books.create') }}'">
     <i class="material-icons">add</i>
 </button>
 

@@ -1,5 +1,5 @@
 from app.models import Book
-from .main import db
+from app.extensions import db
 
 def seed_data():
     with db.session.begin():

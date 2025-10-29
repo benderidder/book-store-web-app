@@ -25,13 +25,13 @@
         <div class="mdl-layout__drawer">
             <span class="mdl-layout-title">Book Store</span>
             <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="{{ url_for('home') }}">
+                <a class="mdl-navigation__link" href="{{ url_for('home.index') }}">
                     <i class="material-icons">home</i> Home
                 </a>
-                <a class="mdl-navigation__link" href="{{ url_for('books') }}">
+                <a class="mdl-navigation__link" href="{{ url_for('books.list') }}">
                     <i class="material-icons">library_books</i> Books
                 </a>
-                <a class="mdl-navigation__link" href="{{ url_for('books_create') }}">
+                <a class="mdl-navigation__link" href="{{ url_for('books.create') }}">
                     <i class="material-icons">add</i> Add Book
                 </a>
             </nav>

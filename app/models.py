@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
-from .main import db  # Adjust the import based on your structure
+from app.extensions import db  # Adjust the import based on your structure
 
 class Book(db.Model):
     __tablename__ = 'books'

@@ -13,6 +13,10 @@ class BookService:
         from ..models import Book  # Import here to avoid circular imports
         return self.db_session.query(Book).get(book_id)
 
+    def get_all_books(self):
+        from ..models import Book  # Import here to avoid circular imports
+        return self.db_session.query(Book).all()
+
     def update_book(self, book, title):
         book.title = title
         self.db_session.commit()

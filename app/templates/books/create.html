@@ -8,8 +8,8 @@ Create Book
 <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col">
         <h2 class="mdl-typography--headline">Create New Book</h2>
-        
-        <form method="POST" action="{{ url_for('books_create') }}">
+
+        <form method="POST" action="{{ url_for('books.create') }}">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input" type="text" id="title" name="title" required>
                 <label class="mdl-textfield__label" for="title">Title</label>
@@ -19,7 +19,7 @@ Create Book
                 <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                     Create Book
                 </button>
-                <a href="{{ url_for('books') }}" class="mdl-button mdl-js-button mdl-button--raised">
+                <a href="{{ url_for('books.list') }}" class="mdl-button mdl-js-button mdl-button--raised">
                     Cancel
                 </a>
             </div>

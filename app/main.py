@@ -30,7 +30,7 @@ def home():
 @app.route('/books')
 def books():
     data = Book.query.all()  # Fetch all records from the table
-    return render_template('/books/index.html', data=data)
+    return render_template('/books/list.html', data=data)
 
 @app.route('/books/create', methods=['GET', 'POST'])
 def books_create():

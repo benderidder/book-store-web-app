@@ -5,7 +5,16 @@ Book store
 {% endblock %}
 
 {% block content %}
-<h1>Welcome to the Book Store</h1>
-<p>Find your favorite books here!</p>
-<a href="{{ url_for('books') }}">Go to Book List</a>
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+        <h1 class="mdl-typography--display-2">Welcome to the Book Store</h1>
+        <p class="mdl-typography--body-1">Find your favorite books here!</p>
+        
+        <a href="{{ url_for('books') }}" 
+           class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+            <i class="material-icons">library_books</i>
+            Go to Book List
+        </a>
+    </div>
+</div>
 {% endblock %}

@@ -1,24 +1,48 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <title>{% block title %}{% endblock %}</title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='site.css') }}"  />
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+</head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <!-- Header -->
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title">Book Store</span>
+                <!-- Add spacer to align navigation to the right -->
+                <div class="mdl-layout-spacer"></div>
+            </div>
+        </header>
 
-    <body>
-        <div class="navbar">
-            <a href="{{ url_for('home') }}" class="navbar-brand">Home</a>
-            <a href="{{ url_for('books') }}" class="navbar-item">Books</a>
+        <!-- Navigation Drawer -->
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">Book Store</span>
+            <nav class="mdl-navigation">
+                <a class="mdl-navigation__link" href="{{ url_for('home') }}">
+                    <i class="material-icons">home</i> Home
+                </a>
+                <a class="mdl-navigation__link" href="{{ url_for('books') }}">
+                    <i class="material-icons">library_books</i> Books
+                </a>
+                <a class="mdl-navigation__link" href="{{ url_for('books_create') }}">
+                    <i class="material-icons">add</i> Add Book
+                </a>
+            </nav>
         </div>
 
-        <div class="body-content">
-            {% block content %}
-            {% endblock %}
-            <hr/>
-            <footer>
-                <p>&copy; 2025</p>
-            </footer>
-        </div>
-    </body>
+        <!-- Main Content -->
+        <main class="mdl-layout__content">
+            <div class="page-content">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+</body>
 </html>

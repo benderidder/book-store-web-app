@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% from "macros/grid.html" import data_grid %}
+
+{% block title %}
+Authors List
+{% endblock %}
+
+{% block content %}
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+        <h2 class="mdl-typography--headline">Authors List</h2>
+
+        {{ data_grid(
+            id='authors',
+            columns=[
+                {'key': 'id', 'label': 'ID'},
+                {'key': 'name', 'label': 'Name'},
+                {'key': 'email', 'label': 'Email'}
+            ],
+            data=data,
+            edit_url='authors.edit',
+            delete_url='authors.delete',
+            id_param='author_id'
+        ) }}
+    </div>
+</div>
+
+<button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored fab-bottom-right"
+        onclick="location.href='{{ url_for('authors.create') }}'">
+    <i class="material-icons">add</i>
+</button>
+{% endblock %}

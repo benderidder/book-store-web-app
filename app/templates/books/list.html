@@ -1,66 +1,24 @@
 {% extends "layout.html" %}
+{% from "macros/grid.html" import data_grid %}
 
-{% block title %}
-Book store
-{% endblock %}
+{% block title %}Book store{% endblock %}
 
 {% block content %}
-
 <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--12-col">
         <h2 class="mdl-typography--headline">Books List</h2>
         
-        <div class="search-box">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="searchInput">
-                <label class="mdl-textfield__label" for="searchInput">Search books...</label>
-            </div>
-        </div>
-
-        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" id="bookTable">
-            <thead>
-                <tr>
-                    <th class="mdl-data-table__cell--non-numeric sortable" data-sort="id">ID</th>
-                    <th class="mdl-data-table__cell--non-numeric sortable" data-sort="title">Title</th>
-                    <th class="mdl-data-table__cell--non-numeric">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for row in data %}
-                <tr>
-                    <td class="mdl-data-table__cell--non-numeric">{{ row.id }}</td>
-                    <td class="mdl-data-table__cell--non-numeric">{{ row.title }}</td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"
-                                onclick="location.href='{{ url_for('books.edit', book_id=row.id) }}'">
-                            <i class="material-icons">edit</i>
-                        </button>
-
-                        <form method="POST" action="{{ url_for('books.delete', book_id=row.id) }}" style="display:inline;">
-                            <button type="submit" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"
-                                    onclick="return confirm('Are you sure you want to delete this book?');">
-                                <i class="material-icons">delete</i>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--4-col">
-                <div id="pagination" class="mdl-pagination">
-                    <button class="mdl-button mdl-js-button" id="prev">
-                        <i class="material-icons">chevron_left</i>
-                    </button>
-                    <span id="pageInfo"></span>
-                    <button class="mdl-button mdl-js-button" id="next">
-                        <i class="material-icons">chevron_right</i>
-                    </button>
-                </div>
-            </div>
-        </div>
+        {{ data_grid(
+            id='books',
+            columns=[
+                {'key': 'id', 'label': 'ID'},
+                {'key': 'title', 'label': 'Title'}
+            ],
+            data=data,
+            edit_url='books.edit',
+            delete_url='books.delete',
+            id_param='book_id'
+        ) }}
     </div>
 </div>
 
@@ -68,89 +26,4 @@ Book store
         onclick="location.href='{{ url_for('books.create') }}'">
     <i class="material-icons">add</i>
 </button>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const table = document.getElementById('bookTable');
-    const searchInput = document.getElementById('searchInput');
-    const tbody = table.querySelector('tbody');
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    
-    // Pagination settings
-    const rowsPerPage = 5;
-    let currentPage = 1;
-    const totalPages = Math.ceil(rows.length / rowsPerPage);
-    
-    // Search functionality
-    searchInput.addEventListener('keyup', function() {
-        const searchTerm = this.value.toLowerCase();
-        rows.forEach(row => {
-            const title = row.cells[2].textContent.toLowerCase();
-            row.style.display = title.includes(searchTerm) ? '' : 'none';
-        });
-        updatePagination();
-    });
-
-    // Sorting functionality
-    document.querySelectorAll('.sortable').forEach(header => {
-        header.addEventListener('click', function() {
-            const column = this.dataset.sort;
-            const isNumeric = column === 'id';
-            
-            rows.sort((a, b) => {
-                let aVal = a.cells[column === 'id' ? 0 : 1].textContent;
-                let bVal = b.cells[column === 'id' ? 0 : 1].textContent;
-                
-                if (isNumeric) {
-                    return parseInt(aVal) - parseInt(bVal);
-                }
-                return aVal.localeCompare(bVal);
-            });
-            
-            if (this.classList.contains('sorted-asc')) {
-                rows.reverse();
-                this.classList.remove('sorted-asc');
-                this.classList.add('sorted-desc');
-            } else {
-                this.classList.remove('sorted-desc');
-                this.classList.add('sorted-asc');
-            }
-            
-            tbody.append(...rows);
-            showPage(currentPage);
-        });
-    });
-
-    // Pagination functionality
-    function showPage(page) {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        
-        rows.forEach((row, index) => {
-            row.style.display = (index >= start && index < end) ? '' : 'none';
-        });
-        
-        document.getElementById('pageInfo').textContent = `Page ${page} of ${totalPages}`;
-        document.getElementById('prev').disabled = page === 1;
-        document.getElementById('next').disabled = page === totalPages;
-    }
-
-    document.getElementById('prev').addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            showPage(currentPage);
-        }
-    });
-
-    document.getElementById('next').addEventListener('click', () => {
-        if (currentPage < totalPages) {
-            currentPage++;
-            showPage(currentPage);
-        }
-    });
-
-    // Initialize pagination
-    showPage(1);
-});
-</script>
 {% endblock %}

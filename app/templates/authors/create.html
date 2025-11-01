@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Create Author
+{% endblock %}
+
+{% block content %}
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--12-col">
+        <h2 class="mdl-typography--headline">Create New Author</h2>
+
+        <form action="{{ url_for('authors.create') }}" method="post" class="mdl-cell mdl-cell--12-col">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="name" name="name" required>
+                <label class="mdl-textfield__label" for="name">Author Name</label>
+            </div>
+
+            <div class="mdl-card__actions">
+                <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    Create Author
+                </button>
+                <a href="{{ url_for('authors.list') }}" class="mdl-button mdl-js-button mdl-button--raised">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

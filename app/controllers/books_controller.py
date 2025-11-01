@@ -4,7 +4,6 @@ from app.models import Book
 from app.services.book_service import BookService
 
 books = Blueprint('books', __name__, url_prefix='/books')
-
 book_service = BookService(db.session)
 
 @books.route('/')

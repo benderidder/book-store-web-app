@@ -75,86 +75,94 @@
     const table = document.getElementById('dataTable-{{id}}');
     const searchInput = document.getElementById('searchInput-{{id}}');
     const tbody = table.querySelector('tbody');
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    
+    let rows = Array.from(tbody.querySelectorAll('tr'));
+
     const rowsPerPage = 5;
     let currentPage = 1;
-    const totalPages = Math.ceil(rows.length / rowsPerPage);
-    
-    function updatePagination() {
-        // recompute visible rows and reset to first page
-        currentPage = 1;
-        showPage(currentPage);
+    let filteredRows = [...rows];
+
+    // --- PAGINATION ---
+    function showPage(page) {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+
+        // Hide all rows
+        rows.forEach(r => r.style.display = 'none');
+
+        // Show only the ones for this page
+        filteredRows.slice(start, end).forEach(r => r.style.display = '');
     }
 
+    function updatePaginationInfo() {
+        const totalPages = Math.max(1, Math.ceil(filteredRows.length / rowsPerPage));
+        document.getElementById('pageInfo-{{id}}').textContent = `Page ${currentPage} of ${totalPages}`;
+        document.getElementById('prev-{{id}}').disabled = currentPage === 1;
+        document.getElementById('next-{{id}}').disabled = currentPage === totalPages;
+    }
+
+    function updateTable() {
+        showPage(currentPage);
+        updatePaginationInfo();
+    }
+
+    // --- SEARCH ---
     searchInput.addEventListener('keyup', function() {
         const searchTerm = this.value.toLowerCase();
-        rows.forEach(row => {
+
+        filteredRows = rows.filter(row => {
             const text = Array.from(row.cells)
-                .slice(0, -1) // Exclude actions column
-                .map(cell => cell.textContent.toLowerCase())
+                .slice(0, -1) // ignore last column (e.g., actions)
+                .map(c => c.textContent.toLowerCase())
                 .join(' ');
-            row.style.display = text.includes(searchTerm) ? '' : 'none';
+            return text.includes(searchTerm);
         });
-        updatePagination();
+
+        currentPage = 1;
+        updateTable();
     });
 
+    // --- SORTING ---
     table.querySelectorAll('.sortable').forEach(header => {
         header.addEventListener('click', function() {
             const columnIndex = Array.from(this.parentNode.children).indexOf(this);
-            
-            rows.sort((a, b) => {
-                const aVal = a.cells[columnIndex].textContent;
-                const bVal = b.cells[columnIndex].textContent;
-                return aVal.localeCompare(bVal, undefined, {numeric: true});
+            const isAsc = this.classList.toggle('sorted-asc');
+            this.classList.toggle('sorted-desc', !isAsc);
+
+            // Reset sorting state of other headers
+            table.querySelectorAll('.sortable').forEach(h => {
+                if (h !== this) h.classList.remove('sorted-asc', 'sorted-desc');
             });
-            
-            if (this.classList.contains('sorted-asc')) {
-                rows.reverse();
-                this.classList.remove('sorted-asc');
-                this.classList.add('sorted-desc');
-            } else {
-                this.classList.remove('sorted-desc');
-                this.classList.add('sorted-asc');
-            }
-            
-            tbody.append(...rows);
-            showPage(currentPage);
+
+            filteredRows.sort((a, b) => {
+                const aText = a.cells[columnIndex].textContent.trim().toLowerCase();
+                const bText = b.cells[columnIndex].textContent.trim().toLowerCase();
+                return isAsc ? aText.localeCompare(bText) : bText.localeCompare(aText);
+            });
+
+            // Rebuild the DOM
+            tbody.append(...filteredRows);
+            updateTable();
         });
     });
 
-    function showPage(page) {
-        const visibleRows = rows.filter(r => r.style.display !== 'none');
-        const total = Math.max(1, Math.ceil(visibleRows.length / rowsPerPage));
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        
-        visibleRows.forEach((row, index) => {
-            row.style.display = (index >= start && index < end) ? '' : 'none';
-        });
-        
-        document.getElementById('pageInfo-{{id}}').textContent = `Page ${page} of ${total}`;
-        document.getElementById('prev-{{id}}').disabled = page === 1;
-        document.getElementById('next-{{id}}').disabled = page === total;
-    }
-
+    // --- PAGINATION BUTTONS ---
     document.getElementById('prev-{{id}}').addEventListener('click', () => {
         if (currentPage > 1) {
             currentPage--;
-            showPage(currentPage);
+            updateTable();
         }
     });
 
     document.getElementById('next-{{id}}').addEventListener('click', () => {
-        const visible = rows.filter(r => r.style.display !== 'none');
-        const total = Math.max(1, Math.ceil(visible.length / rowsPerPage));
-        if (currentPage < total) {
+        const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+        if (currentPage < totalPages) {
             currentPage++;
-            showPage(currentPage);
+            updateTable();
         }
     });
 
-    showPage(1);
+    // --- INIT ---
+    updateTable();
 })();
 </script>
 {% endmacro %}

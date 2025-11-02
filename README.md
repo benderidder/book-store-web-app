@@ -7,9 +7,7 @@ I decided to attempt building a CRUD web application similar to a Microsoft ASP.
 
 The short answer is: yes. In fact, everything I aimed to achieve was not as difficult as I anticipated, especially with access to robust libraries. I must admit that the integration of Co-Pilot in VS Code was also quite helpful. Overall, it truly does not seem challenging to create such an application with Python, even for someone like me, who has grown up with Microsoft and .NET.
 
-## Application Architecture Overview 
-
-### Getting Started
+## Getting Started
 First create a virtual environment and activate it:
 ```bash
 python -m venv .venv
@@ -30,6 +28,8 @@ flask run
 Upon application startup, all tables will be created automatically and seeded with example data.
 
 In your browser navgate to: http://127.0.0.1:5000 
+
+## Application Architecture Overview 
 
 ### Database and Migrations
 To add models (tables) to your database, add them to the data/models.py file. To create a new migration for it, execute the following command:

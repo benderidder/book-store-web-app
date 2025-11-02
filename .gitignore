@@ -1,6 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*/__pycache__/
+**/__pycache__/
 *.py[cod]
 *.pyo
 *.pyd
@@ -52,10 +52,6 @@ dist/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints
-
-# Python environment files
-requirements.txt
-requirements.lock
 
 # Environment variable files
 .env

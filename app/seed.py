@@ -2,31 +2,38 @@ from app.models import Author, Book
 from app.extensions import db
 
 def seed_data():
-    with db.session.begin():
-        # Check if the table is empty
-        if Book.query.count() == 0:
-            # Insert sample data
-            books = [
-                Book(title="The Great Gatsby", author_id=1),
-                Book(title="To Kill a Mockingbird", author_id=2),
-                Book(title="1984", author_id=3),
-                Book(title="Pride and Prejudice", author_id=4)
-            ]
-            db.session.bulk_save_objects(books)  # Efficiently add multiple objects
-            db.session.commit()  # Commit the transaction
-            print("Seed data inserted!")
-        else:
-            print("Table already populated.")
+    # Insert authors first (books reference author IDs)
+    if Author.query.count() == 0:
+        authors = [
+            Author(name="F. Scott Fitzgerald"),
+            Author(name="Harper Lee"),
+            Author(name="George Orwell"),
+            Author(name="Jane Austen")
+        ]
+        db.session.add_all(authors)
+        db.session.commit()
+        print("Author seed data inserted!")
+    else:
+        print("Author table already populated.")
 
-        if Author.query.count() == 0:
-            authors = [
-                Author(name="F. Scott Fitzgerald"),
-                Author(name="Harper Lee"),
-                Author(name="George Orwell"),
-                Author(name="Jane Austen")
-            ]
-            db.session.bulk_save_objects(authors)
-            db.session.commit()
-            print("Author seed data inserted!")
-        else:
-            print("Author table already populated.")
+    # Insert books after authors exist
+    if Book.query.count() == 0:
+        # build a mapping name -> id to set author_id reliably
+        author_map = {a.name: a.id for a in Author.query.all()}
+        books_data = [
+            ("The Great Gatsby", "F. Scott Fitzgerald"),
+            ("To Kill a Mockingbird", "Harper Lee"),
+            ("1984", "George Orwell"),
+            ("Pride and Prejudice", "Jane Austen")
+        ]
+
+        books = []
+        for title, author_name in books_data:
+            author_id = author_map.get(author_name)
+            books.append(Book(title=title, author_id=author_id))
+
+        db.session.add_all(books)
+        db.session.commit()
+        print("Seed data inserted!")
+    else:
+        print("Books table already populated.")

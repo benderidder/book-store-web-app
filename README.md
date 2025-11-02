@@ -22,14 +22,14 @@ The next time you start the application, your migration will be applied.
 
 For database access and Object-Relational Mapping (ORM), SQLAlchemy is utilized.
 
-# Controllers
+### Controllers
 Routes are organized in controllers, similar to how it is done in an ASP.NET MVC application. Blueprints are used for this purpose.
 
-# CRUD Logic
+### CRUD Logic
 All CRUD operations are contained within services. These services are instantiated as global instances, making them accessible across all routes.
 
-# Database in Extensions
+### Database in Extensions
 To ensure a single instantiation and easy access, the database object is instantiated in a separate extensions file.
 
-# Look and Feel
+### Look and Feel
 The user interface employs a Material Design (light) style. A central layout serves as the foundation for each page, with only the title and content defined per page. For grid views, a separate reusable grid component has been created, centralizing all logic such as search, column sorting, and pagination.

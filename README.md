@@ -29,6 +29,23 @@ Upon application startup, all tables will be created automatically and seeded wi
 
 In your browser navgate to: http://127.0.0.1:5000 
 
+## Unit testing
+I also included some unit test, for running them type in your terminal on the root of the project:
+```bash
+pytest
+```
+
+To get an overview of the current code coverage of the unit tests type:
+```bash
+pytest --cov
+```
+To generate a detailed HTML report, you can run:
+
+```bash
+pytest --cov --cov-report html
+```
+This command will create an HTML report in a folder named htmlcov. Open de index.html file in it in your browser to see the report.
+
 ## Application Architecture Overview 
 
 ### Database and Migrations

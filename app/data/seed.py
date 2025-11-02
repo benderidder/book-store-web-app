@@ -1,4 +1,4 @@
-from app.models import Author, Book
+from app.data.models import Author, Book
 from app.extensions import db
 
 def seed_data():

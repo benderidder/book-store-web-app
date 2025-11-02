@@ -21,7 +21,7 @@ def create_app(config_class=Config):
     app.register_blueprint(authors)
 
     # apply database migrations and seed data
-    from app.seed import seed_data
+    from app.data.seed import seed_data
     with app.app_context():
         upgrade()
         seed_data()

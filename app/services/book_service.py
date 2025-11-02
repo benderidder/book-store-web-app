@@ -22,19 +22,16 @@ class BookService:
         # return lightweight viewmodels via a single SQL query (outer join)
         rows = (
             self.db_session
-                .query(
-                    Book.id.label('id'),
-                    Book.title.label('title'),
-                    Author.name.label('author_name')
-                )
+                .query(Book, Author)
                 .outerjoin(Author, Book.author_id == Author.id)
                 .all()
         )
         result: List[BookViewModel] = []
-        for r in rows:
-            # SQLAlchemy row supports attribute access for labeled columns
-            author = getattr(r, 'author_name', None) or ''
-            result.append(BookViewModel(id=r.id, title=r.title, author_name=author))
+        
+        for book, author in rows:
+            author_name = author.name if author else ''
+            result.append(BookViewModel(id=book.id, title=book.title, author_name=author_name))
+
         return result
 
     def update_book(self, book, title):

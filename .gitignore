@@ -57,3 +57,5 @@ dist/
 .env
 *.env
 
+# pytest cache
+.pytest_cache/

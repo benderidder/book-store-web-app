@@ -9,9 +9,29 @@ The short answer is: yes. In fact, everything I aimed to achieve was not as diff
 
 ## Application Architecture Overview 
 
-### Database and Migrations
-If you do not have Docker (Desktop for Windows) running on your system, please install it first. You can start the PostgreSQL container by running the command 'docker-compose up` in the project root. Upon application startup, all tables will be created automatically and seeded with example data.
+### Getting Started
+First create a virtual environment and activate it:
+```bash
+python -m venv .venv
+.\.venv\Scripts\activate
+```
+Then install all needed requirements:
+```bash
+pip install -r .\requirements.txt
+```
+If you do not have Docker on your system, install it first. Make sure it's running. You can then start the PostgreSQL container by running the command:
+```bash
+docker-compose up
+```
+To run the application type:
+```
+flask run
+```
+Upon application startup, all tables will be created automatically and seeded with example data.
 
+In your browser navgate to: http://127.0.0.1:5000 
+
+### Database and Migrations
 To add models (tables) to your database, add them to the data/models.py file. To create a new migration for it, execute the following command:
 
 ```bash

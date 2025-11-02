@@ -14,8 +14,18 @@ Create Book
                 <input class="mdl-textfield__input" type="text" id="title" name="title" required>
                 <label class="mdl-textfield__label" for="title">Title</label>
             </div>
+
+            <div style="margin-top:16px;">
+                <label for="author" class="mdl-typography--body-1">Author</label>
+                <select id="author" name="author_id" class="mdl-textfield__input" style="display:block; margin-top:8px;">
+                    <option value="">(No author)</option>
+                    {% for a in authors %}
+                    <option value="{{ a.id }}">{{ a.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
             
-            <div class="mdl-card__actions">
+            <div class="mdl-card__actions" style="margin-top:16px;">
                 <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                     Create Book
                 </button>

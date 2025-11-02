@@ -6,9 +6,9 @@ class BookService:
     def __init__(self, db_session):
         self.db_session = db_session
 
-    def create_book(self, title):
+    def create_book(self, title, author_id):
         from ..data.models import Book  # Import here to avoid circular imports
-        new_book = Book(title=title)
+        new_book = Book(title=title, author_id=author_id)
         self.db_session.add(new_book)
         self.db_session.commit()
         return new_book
